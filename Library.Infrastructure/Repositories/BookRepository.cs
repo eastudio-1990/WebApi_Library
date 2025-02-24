@@ -3,29 +3,33 @@ using Library.Core.Entities;
 
 namespace Library.Infrastructure.Repositories
 {
-    public class BookRepository : IBookService
+    public class BookRepository : IBookRepository
     {
-        private readonly List<Book> _books = new();
-        private int _nextId = 1;
+        private readonly List<Book> _books = new();  // لیست ساده به عنوان ذخیره‌سازی موقت
+        private int _nextId = 1;  // مقداردهی ID اولیه
 
+        // دریافت همه کتاب‌ها
         public async Task<IEnumerable<Book>> GetAllAsync()
         {
             return await Task.FromResult(_books);
         }
 
+        // دریافت کتاب بر اساس ID
         public async Task<Book> GetByIdAsync(int id)
         {
             var book = _books.FirstOrDefault(b => b.Id == id);
             return await Task.FromResult(book);
         }
 
+        // اضافه کردن کتاب
         public async Task AddAsync(Book book)
         {
-            book.Id = _nextId++; // مقدار ID را افزایش می‌دهیم
-            _books.Add(book);
+            book.Id = _nextId++;  // ID جدید برای کتاب
+            _books.Add(book);      // اضافه کردن کتاب به لیست
             await Task.CompletedTask;
         }
 
+        // بروزرسانی کتاب
         public async Task UpdateAsync(Book book)
         {
             var existingBook = _books.FirstOrDefault(b => b.Id == book.Id);
@@ -39,6 +43,7 @@ namespace Library.Infrastructure.Repositories
             await Task.CompletedTask;
         }
 
+        // حذف کتاب
         public async Task DeleteAsync(int id)
         {
             var book = _books.FirstOrDefault(b => b.Id == id);
@@ -48,6 +53,5 @@ namespace Library.Infrastructure.Repositories
             }
             await Task.CompletedTask;
         }
-
     }
 }

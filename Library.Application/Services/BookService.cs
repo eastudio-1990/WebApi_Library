@@ -1,23 +1,22 @@
 ﻿using Library.Application.Interfaces;
 using Library.Core.Entities;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Library.Application.Services
 {
     public class BookService : IBookService
     {
-        private readonly IBookService _bookRepository;
+        private readonly IBookRepository _bookRepository;
 
-        public BookService(IBookService bookRepository)
+        public BookService(IBookRepository bookRepository)
         {
             _bookRepository = bookRepository;
         }
 
-
-
         public async Task<IEnumerable<Book>> GetAllAsync()
         {
             return await _bookRepository.GetAllAsync();
-
         }
 
         public async Task<Book> GetByIdAsync(int id)
