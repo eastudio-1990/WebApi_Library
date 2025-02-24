@@ -24,6 +24,7 @@ builder.Services.ConfigureJwtAuthentication(configuration);
 builder.Services.AddScoped<AuthService>();
 
 // Services v
+
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
 
@@ -32,6 +33,13 @@ builder.Services.AddScoped<IBookService, BookService>();
 
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
+
+builder.Services.AddScoped<IBorrowerRepository, BorrowerRepository>();
+builder.Services.AddScoped<IBorrowerService, BorrowerService>();
+
+builder.Services.AddScoped<IBorrowRecordRepository, BorrowRecordRepository>();
+builder.Services.AddScoped<IBorrowRecordService, BorrowRecordService>();
+
 // Services ^
 
 var app = builder.Build();
