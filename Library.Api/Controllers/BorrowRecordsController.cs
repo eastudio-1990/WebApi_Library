@@ -1,11 +1,13 @@
 ﻿using Library.Application.Interfaces;
 using Library.Core.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Library.Api.Controllers
 {
     [Route("api/borrowRecords")]
     [ApiController]
+    [Authorize(Roles = "Admin")]  // Only Admins can access these endpoints
     public class BorrowRecordsController : ControllerBase
     {
         private readonly IBorrowRecordService _borrowRecordService;
@@ -15,6 +17,7 @@ namespace Library.Api.Controllers
             _borrowRecordService = borrowRecordService;
         }
 
+        // GET /api/borrowrecords
         [HttpGet]
         public async Task<IActionResult> GetBorrowRecords()
         {
@@ -22,6 +25,7 @@ namespace Library.Api.Controllers
             return Ok(borrowRecords);
         }
 
+        // GET /api/borrowrecords/{id}
         [HttpGet("{id}")]
         public async Task<IActionResult> GetBorrowRecord(int id)
         {
@@ -33,6 +37,7 @@ namespace Library.Api.Controllers
             return Ok(borrowRecord);
         }
 
+        // POST /api/borrowrecords
         [HttpPost]
         public async Task<IActionResult> AddBorrowRecord([FromBody] BorrowRecord borrowRecord)
         {
@@ -40,6 +45,7 @@ namespace Library.Api.Controllers
             return CreatedAtAction(nameof(GetBorrowRecord), new { id = borrowRecord.Id }, borrowRecord);
         }
 
+        // PUT /api/borrowrecords/{id}
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateBorrowRecord(int id, [FromBody] BorrowRecord borrowRecord)
         {
@@ -52,6 +58,7 @@ namespace Library.Api.Controllers
             return NoContent();
         }
 
+        // DELETE /api/borrowrecords/{id}
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteBorrowRecord(int id)
         {

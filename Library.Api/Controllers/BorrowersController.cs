@@ -1,11 +1,13 @@
 ﻿using Library.Application.Interfaces;
 using Library.Core.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Library.Api.Controllers
 {
     [Route("api/borrowers")]
     [ApiController]
+    [Authorize(Roles = "Admin")]  // Only Admins can access these endpoints
     public class BorrowersController : ControllerBase
     {
         private readonly IBorrowerService _borrowerService;
@@ -15,6 +17,7 @@ namespace Library.Api.Controllers
             _borrowerService = borrowerService;
         }
 
+        // GET /api/borrowers
         [HttpGet]
         public async Task<IActionResult> GetBorrowers()
         {
@@ -22,6 +25,7 @@ namespace Library.Api.Controllers
             return Ok(borrowers);
         }
 
+        // GET /api/borrowers/{id}
         [HttpGet("{id}")]
         public async Task<IActionResult> GetBorrower(int id)
         {
@@ -33,6 +37,7 @@ namespace Library.Api.Controllers
             return Ok(borrower);
         }
 
+        // POST /api/borrowers
         [HttpPost]
         public async Task<IActionResult> AddBorrower([FromBody] Borrower borrower)
         {
@@ -40,6 +45,7 @@ namespace Library.Api.Controllers
             return CreatedAtAction(nameof(GetBorrower), new { id = borrower.Id }, borrower);
         }
 
+        // PUT /api/borrowers/{id}
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateBorrower(int id, [FromBody] Borrower borrower)
         {
@@ -52,6 +58,7 @@ namespace Library.Api.Controllers
             return NoContent();
         }
 
+        // DELETE /api/borrowers/{id}
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteBorrower(int id)
         {

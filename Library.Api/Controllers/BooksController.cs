@@ -17,7 +17,9 @@ namespace Library.Api.Controllers
             _bookService = bookService;
         }
 
+        // GET /api/books
         [HttpGet]
+        [Authorize(Roles = "User, Admin")]
         public async Task<IActionResult> GetBooks()
         {
             try
@@ -31,6 +33,27 @@ namespace Library.Api.Controllers
             }
         }
 
+        // GET /api/books/{id}
+        [HttpGet("{id}")]
+        [Authorize(Roles = "User, Admin")]
+        public async Task<IActionResult> GetBookById(int id)
+        {
+            try
+            {
+                var book = await _bookService.GetByIdAsync(id);
+                if (book == null)
+                {
+                    return NotFound("Book not found.");
+                }
+                return Ok(book);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
+        // POST /api/books
         [HttpPost]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> AddBook([FromBody] Book book)
@@ -43,7 +66,7 @@ namespace Library.Api.Controllers
             try
             {
                 await _bookService.AddAsync(book);
-                return CreatedAtAction(nameof(GetBooks), new { id = book.Id }, book);
+                return CreatedAtAction(nameof(GetBookById), new { id = book.Id }, book);
             }
             catch (Exception ex)
             {
@@ -51,6 +74,7 @@ namespace Library.Api.Controllers
             }
         }
 
+        // PUT /api/books/{id}
         [HttpPut("{id}")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateBook(int id, [FromBody] Book book)
@@ -77,6 +101,7 @@ namespace Library.Api.Controllers
             }
         }
 
+        // DELETE /api/books/{id}
         [HttpDelete("{id}")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteBook(int id)
@@ -91,24 +116,6 @@ namespace Library.Api.Controllers
 
                 await _bookService.DeleteAsync(id);
                 return NoContent();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { message = ex.Message });
-            }
-        }
-
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetBookById(int id)
-        {
-            try
-            {
-                var book = await _bookService.GetByIdAsync(id);
-                if (book == null)
-                {
-                    return NotFound("Book not found.");
-                }
-                return Ok(book);
             }
             catch (Exception ex)
             {

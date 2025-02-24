@@ -8,22 +8,29 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
 var configuration = builder.Configuration;
+
+#region DataBase Config Tunnel
+// Use sql lite v
 
 builder.Services.AddDbContext<LibraryContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("MojCon")));
 
+// Use sql lite ^
+#endregion DataBase Config Tunnel
 
 builder.Services.AddControllers();
+
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 
 builder.Services.ConfigureJwtAuthentication(configuration);
 
 builder.Services.AddScoped<AuthService>();
 
-// Services v
+builder.Services.AddSwaggerGen();
+
+#region Services
+// Dep Inj Services v
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
@@ -40,7 +47,8 @@ builder.Services.AddScoped<IBorrowerService, BorrowerService>();
 builder.Services.AddScoped<IBorrowRecordRepository, BorrowRecordRepository>();
 builder.Services.AddScoped<IBorrowRecordService, BorrowRecordService>();
 
-// Services ^
+// Dep Inj Services ^
+#endregion Services
 
 var app = builder.Build();
 
@@ -54,6 +62,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
+
 app.MapControllers();
 
 app.Run();
