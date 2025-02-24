@@ -3,7 +3,15 @@
     public class BorrowRecord
     {
         public int Id { get; set; }
+
+        /// <summary>
+        /// تاریخ امانت رفتن کتاب
+        /// </summary>
         public DateTime BorrowDate { get; set; }
+
+        /// <summary>
+        /// تاریخ مرجوع کتاب امانت گرفته شده
+        /// </summary>
         public DateTime? ReturnDate { get; set; }
         public int BookId { get; set; }
         public Book Book { get; set; }

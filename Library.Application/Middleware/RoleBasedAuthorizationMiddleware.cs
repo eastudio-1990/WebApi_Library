@@ -18,7 +18,7 @@ namespace Library.Application.Middleware
 
             if (userRole == "Admin")
             {
-                await _next(context); // Admin can access everything
+                await _next(context); // Admn can access everything
             }
             else
             {
