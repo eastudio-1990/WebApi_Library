@@ -21,13 +21,17 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.ConfigureJwtAuthentication(configuration);
 
-// Services v
 builder.Services.AddScoped<AuthService>();
+
+// Services v
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
 
 builder.Services.AddScoped<IBookRepository, BookRepository>();
 builder.Services.AddScoped<IBookService, BookService>();
+
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
 // Services ^
 
 var app = builder.Build();
