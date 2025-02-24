@@ -12,7 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
 
 builder.Services.AddDbContext<LibraryContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("MojCon")));
+    options.UseSqlite(builder.Configuration.GetConnectionString("MojCon")));
 
 
 builder.Services.AddControllers();
