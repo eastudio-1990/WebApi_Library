@@ -7,7 +7,7 @@ namespace Library.Api.Controllers
 {
     [Route("api/borrowers")]
     [ApiController]
-    [Authorize(Roles = "Admin")]  // Only Admins can access these endpoints
+    [Authorize(Roles = "Admin")]
     public class BorrowersController : ControllerBase
     {
         private readonly IBorrowerService _borrowerService;
