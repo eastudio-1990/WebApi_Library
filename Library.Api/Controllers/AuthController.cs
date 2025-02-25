@@ -17,7 +17,7 @@ namespace Library.Api.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginRequest request)
+        public async Task<IActionResult> Login([FromBody] Application.Middleware.LoginRequest request)
         {
             try
             {
