@@ -4,7 +4,10 @@ using Library.Infrastructure;
 using Library.Infrastructure.Config;
 using Library.Infrastructure.Repositories;
 using Library.Infrastructure.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +28,19 @@ builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.ConfigureJwtAuthentication(configuration);
 
+// Moved to AuthService v
+//builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+//    .AddJwtBearer(opt =>
+//    {
+//        opt.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+//        {
+//            ValidIssuer = configuration["MojoJwt:Issuer"],
+//            ValidAudience = configuration["MojoJwt:Audience"],
+//            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["MojoJwt:SecretKey"]))
+//        };
+//    });
+// Moved to AuthService ^
+
 builder.Services.AddScoped<AuthService>();
 
 builder.Services.AddSwaggerGen();
@@ -33,6 +49,7 @@ builder.Services.AddSwaggerGen();
 // Dep Inj Services v
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
 
 builder.Services.AddScoped<IBookRepository, BookRepository>();

@@ -34,7 +34,9 @@ namespace Library.Application.Services
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new Claim(ClaimTypes.Name, user.Name),
                 new Claim(ClaimTypes.Email, user.Email),
-                new Claim(ClaimTypes.Role, user.Role)
+                new Claim(ClaimTypes.Role, user.Role),
+                new Claim(JwtRegisteredClaimNames.Iss, _configuration["MojoJwt:Issuer"]),
+                new Claim(JwtRegisteredClaimNames.Aud, _configuration["MojoJwt:Audience"])
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["MojoJwt:SecretKey"]));
