@@ -24,9 +24,7 @@ namespace Library.Application.Services
         {
             var user = await _userRepository.GetByEmailAsync(email);
 
-            bool passResult = _passwordHasher.VerifyPassword(password, user.PasswordHash);
-
-            if (user == null || !passResult)
+            if (user == null || !_passwordHasher.VerifyPassword(password, user.PasswordHash))
                 throw new UnauthorizedAccessException("Invalid cRedentials.");
 
             var claims = new[]
