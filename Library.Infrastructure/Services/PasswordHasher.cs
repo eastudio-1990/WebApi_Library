@@ -44,6 +44,7 @@ namespace Library.Infrastructure.Services
             return expectedHash == actualHash;
         }
 
+        [Obsolete]
         private static string HashPassword2(string password)
         {
             using var sha256 = System.Security.Cryptography.SHA256.Create();

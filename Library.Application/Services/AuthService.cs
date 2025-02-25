@@ -70,7 +70,6 @@ namespace Library.Application.Services
             if (existingUser != null)
                 throw new InvalidOperationException("User already exists.");
 
-            // Hash the password
             var hashedPassword = _passwordHasher.HashPassword(password);
 
             var newUser = new User
