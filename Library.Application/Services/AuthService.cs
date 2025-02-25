@@ -1,4 +1,5 @@
 ﻿using Library.Application.Interfaces;
+using Library.Core.Entities;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -46,6 +47,27 @@ namespace Library.Application.Services
             );
 
             return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
+
+        public async Task RegisterAsync(string email, string password, string name, string role)
+        {
+            var existingUser = await _userRepository.GetByEmailAsync(email);
+            if (existingUser != null)
+                throw new InvalidOperationException("User already exists.");
+
+            // Hash the password
+            var hashedPassword = _passwordHasher.HashPassword(password);
+
+            var newUser = new User
+            {
+                Email = email,
+                PasswordHash = hashedPassword,
+                Name = name,
+                Role = role,
+            };
+
+            await _userRepository.AddAsync(newUser);
         }
     }
 }
