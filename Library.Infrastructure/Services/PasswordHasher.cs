@@ -1,6 +1,7 @@
 ﻿using Library.Application.Interfaces;
 using System.Security.Cryptography;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+using System.Text;
 
 namespace Library.Infrastructure.Services
 {
@@ -42,6 +43,14 @@ namespace Library.Infrastructure.Services
 
             return expectedHash == actualHash;
         }
+
+        private static string HashPassword2(string password)
+        {
+            using var sha256 = System.Security.Cryptography.SHA256.Create();
+            var hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
+            return Convert.ToBase64String(hashedBytes);
+        }
+
     }
 }
 

@@ -23,8 +23,10 @@ namespace Library.Application.Services
         public async Task<string> LoginAsync(string email, string password)
         {
             var user = await _userRepository.GetByEmailAsync(email);
-            
-            if (user == null || !_passwordHasher.VerifyPassword(password, user.PasswordHash))
+
+            bool passResult = _passwordHasher.VerifyPassword(password, user.PasswordHash);
+
+            if (user == null || !passResult)
                 throw new UnauthorizedAccessException("Invalid cRedentials.");
 
             var claims = new[]

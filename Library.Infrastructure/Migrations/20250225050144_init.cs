@@ -112,6 +112,11 @@ namespace Library.Infrastructure.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.InsertData(
+                table: "Users",
+                columns: new[] { "Id", "Email", "Name", "PasswordHash", "Role" },
+                values: new object[] { 1, "Admin@gmail.com", "Admin", "uw7u2ftduJIFMPShQkyDig==:trOGuvZ0TJ0UoHd4VQmMw3WcBVHVx/DVjLBfeCYdx10=", "Admin" });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Books_CategoryId",
                 table: "Books",

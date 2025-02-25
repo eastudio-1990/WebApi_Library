@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Library.Infrastructure.Migrations
 {
     [DbContext(typeof(LibraryContext))]
-    [Migration("20250224054908_init")]
+    [Migration("20250225050144_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -146,6 +146,16 @@ namespace Library.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Email = "Admin@gmail.com",
+                            Name = "Admin",
+                            PasswordHash = "uw7u2ftduJIFMPShQkyDig==:trOGuvZ0TJ0UoHd4VQmMw3WcBVHVx/DVjLBfeCYdx10=",
+                            Role = "Admin"
+                        });
                 });
 
             modelBuilder.Entity("Library.Core.Entities.Book", b =>
