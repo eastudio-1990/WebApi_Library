@@ -6,13 +6,28 @@ namespace Library.Infrastructure.Repositories
 {
     public class UserRepository : IUserRepository
     {
+        #region Props
+        // v
+
         private readonly LibraryContext _context;
         private readonly List<User> _users = new();
+
+        // ^
+        #endregion Props
+
+        #region Ctor
+        // v
 
         public UserRepository(LibraryContext context)
         {
             _context = context;
         }
+
+        // ^
+        #endregion Ctor
+
+        #region Methods
+        // v
 
         public async Task<User?> GetByEmailAsync(string email)
         {
@@ -50,5 +65,8 @@ namespace Library.Infrastructure.Repositories
         {
             return await Task.FromResult(_users);
         }
+
+        // ^
+        #endregion Methods
     }
 }

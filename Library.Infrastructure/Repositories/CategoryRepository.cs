@@ -6,13 +6,27 @@ namespace Library.Infrastructure.Repositories
 {
     public class CategoryRepository : ICategoryRepository
     {
+        #region Props
+        // v
+
         private readonly LibraryContext _context;
+
+        // ^
+        #endregion
+
+        #region Ctor
+        // v
 
         public CategoryRepository(LibraryContext context)
         {
             _context = context;
         }
 
+        // ^
+        #endregion Ctor
+
+        #region Methods
+        // v
         public async Task<IEnumerable<Category>> GetAllAsync()
         {
             return await _context.Categories.ToListAsync();
@@ -44,5 +58,8 @@ namespace Library.Infrastructure.Repositories
                 await _context.SaveChangesAsync();
             }
         }
+
+        // ^
+        #endregion Methods
     }
 }

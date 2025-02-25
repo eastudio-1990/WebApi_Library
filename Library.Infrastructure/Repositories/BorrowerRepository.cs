@@ -6,13 +6,27 @@ namespace Library.Infrastructure.Repositories
 {
     public class BorrowerRepository : IBorrowerRepository
     {
+        #region Props
+        // v
+
         private readonly LibraryContext _context;
+
+        // ^
+        #endregion Props
+
+        #region Ctor
+        // v
 
         public BorrowerRepository(LibraryContext context)
         {
             _context = context;
         }
 
+        // ^
+        #endregion Ctor
+
+        #region Methods
+        // v
         public async Task<IEnumerable<Borrower>> GetAllAsync()
         {
             return await _context.Borrowers.ToListAsync();
@@ -44,5 +58,8 @@ namespace Library.Infrastructure.Repositories
                 await _context.SaveChangesAsync();
             }
         }
+
+        // ^
+        #endregion Methods
     }
 }

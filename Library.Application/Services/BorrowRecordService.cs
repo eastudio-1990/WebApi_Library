@@ -5,12 +5,28 @@ namespace Library.Application.Services
 {
     public class BorrowRecordService : IBorrowRecordService
     {
+
+        #region DI
+        // v
+
         private readonly IBorrowRecordRepository _borrowRecordRepository;
+
+        // ^
+        #endregion DI
+
+        #region Ctor
+        // v
 
         public BorrowRecordService(IBorrowRecordRepository borrowRecordRepository)
         {
             _borrowRecordRepository = borrowRecordRepository;
         }
+
+        // ^
+        #endregion  Ctor
+
+        #region Methods
+        // v
 
         public async Task<IEnumerable<BorrowRecord>> GetAllAsync()
         {
@@ -36,5 +52,8 @@ namespace Library.Application.Services
         {
             await _borrowRecordRepository.DeleteAsync(id);
         }
+
+        // ^
+        #endregion Methods
     }
 }

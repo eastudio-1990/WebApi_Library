@@ -5,12 +5,27 @@ namespace Library.Application.Services
 {
     public class CategoryService : ICategoryService
     {
+        #region DI
+        // v
+
         private readonly ICategoryRepository _categoryRepository;
+
+        // ^
+        #endregion DI
+
+        #region Ctor
+        // v
 
         public CategoryService(ICategoryRepository categoryRepository)
         {
             _categoryRepository = categoryRepository;
         }
+
+        // ^
+        #endregion
+
+        #region Methods
+        // v
 
         public async Task<IEnumerable<Category>> GetAllAsync()
         {
@@ -36,6 +51,9 @@ namespace Library.Application.Services
         {
             await _categoryRepository.DeleteAsync(id);
         }
+
+        // ^
+        #endregion Methods
     }
 }
 

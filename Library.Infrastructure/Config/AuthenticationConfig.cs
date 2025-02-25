@@ -10,7 +10,6 @@ namespace Library.Infrastructure.Config
     {
         public static void ConfigureJwtAuthentication(this IServiceCollection services, IConfiguration configuration)
         {
-
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {

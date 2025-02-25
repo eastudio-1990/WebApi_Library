@@ -5,8 +5,17 @@ namespace Library.Infrastructure.Repositories
 {
     public class BookRepository : IBookRepository
     {
+        #region Props
+        // v
+
         private readonly List<Book> _books = new();  // لیست ساده به عنوان ذخیره‌سازی موقت
         private int _nextId = 1;  // مقداردهی ID اولیه
+
+        // ^
+        #endregion
+
+        #region Methods
+        // v
 
         // دریافت همه کتاب‌ها
         public async Task<IEnumerable<Book>> GetAllAsync()
@@ -53,5 +62,8 @@ namespace Library.Infrastructure.Repositories
             }
             await Task.CompletedTask;
         }
+
+        // ^
+        #endregion Methods
     }
 }

@@ -5,12 +5,28 @@ namespace Library.Application.Services
 {
     public class UserService : IUserService
     {
+
+        #region DI
+        // v
+
         private readonly IUserRepository _userRepository;
+
+        // ^
+        #endregion DI
+
+        #region Ctor
+        // v
 
         public UserService(IUserRepository userRepository)
         {
             _userRepository = userRepository;
         }
+
+        // ^
+        #endregion Ctor
+
+        #region Methods
+        // v
 
         public async Task<User?> GetByEmailAsync(string email)
         {
@@ -45,5 +61,8 @@ namespace Library.Application.Services
         {
             return await _userRepository.GetAllAsync();
         }
+
+        // ^
+        #endregion Methods
     }
 }

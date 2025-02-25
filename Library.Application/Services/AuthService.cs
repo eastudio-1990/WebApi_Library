@@ -10,9 +10,18 @@ namespace Library.Application.Services
 {
     public class AuthService
     {
+        #region DI
+        // v
+
         private readonly IUserRepository _userRepository;
         private readonly IConfiguration _configuration;
         private readonly IPasswordHasher _passwordHasher;
+
+        // ^
+        #endregion DI
+
+        #region Ctor
+        // v
 
         public AuthService(IUserRepository userRepository, IConfiguration configuration, IPasswordHasher passwordHasher)
         {
@@ -20,6 +29,12 @@ namespace Library.Application.Services
             _configuration = configuration;
             _passwordHasher = passwordHasher;
         }
+
+        // ^
+        #endregion Ctor
+
+        #region Methods
+        // v
 
         public async Task<string> LoginAsync(string email, string password)
         {
@@ -49,7 +64,6 @@ namespace Library.Application.Services
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-
         public async Task RegisterAsync(string email, string password, string name, string role)
         {
             var existingUser = await _userRepository.GetByEmailAsync(email);
@@ -69,5 +83,8 @@ namespace Library.Application.Services
 
             await _userRepository.AddAsync(newUser);
         }
+
+        // ^
+        #endregion Mehods
     }
 }

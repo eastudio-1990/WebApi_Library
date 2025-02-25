@@ -5,12 +5,27 @@ namespace Library.Application.Services
 {
     public class BorrowerService : IBorrowerService
     {
+        #region DI
+        // v
+
         private readonly IBorrowerRepository _borrowerRepository;
+
+        // ^
+        #endregion DI
+
+        #region Ctor
+        // v
 
         public BorrowerService(IBorrowerRepository borrowerRepository)
         {
             _borrowerRepository = borrowerRepository;
         }
+
+        // ^
+        #endregion Ctor
+
+        #region Methods
+        // v
 
         public async Task<IEnumerable<Borrower>> GetAllAsync()
         {
@@ -36,5 +51,8 @@ namespace Library.Application.Services
         {
             await _borrowerRepository.DeleteAsync(id);
         }
+
+        // ^
+        #endregion Methods
     }
 }

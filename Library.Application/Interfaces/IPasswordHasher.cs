@@ -1,6 +1,4 @@
-﻿using System.Text;
-
-namespace Library.Application.Interfaces
+﻿namespace Library.Application.Interfaces
 {
     public interface IPasswordHasher
     {

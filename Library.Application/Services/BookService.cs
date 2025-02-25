@@ -7,12 +7,27 @@ namespace Library.Application.Services
 {
     public class BookService : IBookService
     {
+        #region DI
+        // v
+
         private readonly IBookRepository _bookRepository;
+
+        // ^
+        #endregion DI
+
+        #region Ctor 
+        // v
 
         public BookService(IBookRepository bookRepository)
         {
             _bookRepository = bookRepository;
         }
+
+        // ^
+        #endregion Ctor
+
+        #region Methods 
+        // v
 
         public async Task<IEnumerable<Book>> GetAllAsync()
         {
@@ -38,5 +53,8 @@ namespace Library.Application.Services
         {
             await _bookRepository.DeleteAsync(id);
         }
+
+        // ^
+        #endregion 
     }
 }
