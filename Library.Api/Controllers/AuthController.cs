@@ -1,4 +1,5 @@
 ﻿using Library.Application.Services;
+using Library.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
@@ -10,10 +11,12 @@ namespace Library.Api.Controllers
     public class AuthController : ControllerBase
     {
         private readonly AuthService _authService;
+        private readonly ILogger<AuthController> _logger;
 
-        public AuthController(AuthService authService)
+        public AuthController(AuthService authService, ILogger<AuthController> logger)
         {
             _authService = authService;
+            _logger = logger;
         }
 
         [HttpPost("login")]
@@ -26,6 +29,7 @@ namespace Library.Api.Controllers
             }
             catch (UnauthorizedAccessException)
             {
+                _logger.LogError(LoggerEnums.LogMessage.Warning.ToString() + " " + "Unauthorize Request");
                 return Unauthorized();
             }
         }

@@ -1,4 +1,5 @@
 ﻿using Library.Application.Interfaces;
+using Library.Core;
 using Library.Core.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,10 +12,12 @@ namespace Library.Api.Controllers
     public class AdminController : ControllerBase
     {
         private readonly IUserService _userService;
+        private readonly ILogger<AdminController> _logger;
 
-        public AdminController(IUserService userService)
+        public AdminController(IUserService userService, ILogger<AdminController> logger)
         {
             _userService = userService;
+            _logger = logger;
         }
 
         // GET /api/admin/users
@@ -43,6 +46,7 @@ namespace Library.Api.Controllers
         {
             if (user == null)
             {
+                _logger.LogError(LoggerEnums.LogMessage.Error.ToString() + " " + "Null Request");
                 return BadRequest("User cannot be null.");
             }
 

@@ -1,4 +1,5 @@
 ﻿using Library.Application.Interfaces;
+using Library.Core;
 using Library.Core.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,10 +12,12 @@ namespace Library.Api.Controllers
     public class BooksController : ControllerBase
     {
         private readonly IBookService _bookService;
+        private readonly ILogger<BooksController> _logger;
 
-        public BooksController(IBookService bookService)
+        public BooksController(IBookService bookService, ILogger<BooksController> logger)
         {
             _bookService = bookService;
+            _logger = logger;
         }
 
         // GET /api/books
@@ -29,6 +32,7 @@ namespace Library.Api.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(LoggerEnums.LogMessage.Error.ToString() + " " + ex.Message);
                 return BadRequest(new { message = ex.Message });
             }
         }
@@ -49,6 +53,7 @@ namespace Library.Api.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(LoggerEnums.LogMessage.Error.ToString() + " " + ex.Message);
                 return BadRequest(new { message = ex.Message });
             }
         }
@@ -60,6 +65,7 @@ namespace Library.Api.Controllers
         {
             if (book == null)
             {
+                _logger.LogError(LoggerEnums.LogMessage.Warning.ToString() + " " + "Null Request");
                 return BadRequest("Book cannot be null.");
             }
 
@@ -70,6 +76,7 @@ namespace Library.Api.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(LoggerEnums.LogMessage.Error.ToString() + " " + ex.Message);
                 return BadRequest(new { message = ex.Message });
             }
         }
@@ -81,6 +88,7 @@ namespace Library.Api.Controllers
         {
             if (book == null || book.Id != id)
             {
+                _logger.LogError(LoggerEnums.LogMessage.Warning.ToString() + " " + "Book ID mismatch or Null Request");
                 return BadRequest("Book ID mismatch or book is null.");
             }
 
@@ -97,6 +105,7 @@ namespace Library.Api.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(LoggerEnums.LogMessage.Error.ToString() + " " + ex.Message);
                 return BadRequest(new { message = ex.Message });
             }
         }
@@ -119,6 +128,7 @@ namespace Library.Api.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(LoggerEnums.LogMessage.Error.ToString() + " " + ex.Message);
                 return BadRequest(new { message = ex.Message });
             }
         }
