@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.DataProtection;
 using Microsoft.EntityFrameworkCore;
 using AspNetCoreRateLimit;
 using Serilog;
+using Library.Application.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,20 +29,8 @@ builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.ConfigureJwtAuthentication(configuration);
 
-// Moved to AuthService v
+builder.Services.AddScoped<ExceptionFilter>();
 
-//builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-//    .AddJwtBearer(opt =>
-//    {
-//        opt.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
-//        {
-//            ValidIssuer = configuration["MojoJwt:Issuer"],
-//            ValidAudience = configuration["MojoJwt:Audience"],
-//            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["MojoJwt:SecretKey"]))
-//        };
-//    });
-
-// Moved to AuthService ^
 
 builder.Services.AddScoped<AuthService>();
 
@@ -90,6 +79,11 @@ configuration.ReadFrom.Configuration(context.Configuration));
 
 
 // Rate Limiting v
+
+builder.Services.AddControllers(options =>
+{
+    options.Filters.Add<ExceptionFilter>();
+});
 
 builder.Services.AddInMemoryRateLimiting();
 
