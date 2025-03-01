@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using AspNetCoreRateLimit;
 using Serilog;
 using Library.Application.Middleware;
+using Library.Core.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 

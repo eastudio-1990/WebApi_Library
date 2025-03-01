@@ -1,6 +1,6 @@
 ﻿using Library.Core.Entities;
 
-namespace Library.Application.Interfaces
+namespace Library.Core.Interfaces
 {
 
     public interface IBookRepository

@@ -1,5 +1,6 @@
 ﻿using Library.Application.Interfaces;
 using Library.Core.Entities;
+using Library.Core.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;

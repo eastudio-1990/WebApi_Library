@@ -1,5 +1,6 @@
 ﻿using Library.Application.Interfaces;
 using Library.Core.Entities;
+using Library.Core.Interfaces;
 
 namespace Library.Application.Services
 {
