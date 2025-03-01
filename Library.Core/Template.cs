@@ -5,6 +5,8 @@ namespace Library.Core
     /// <summary>
     /// Template Class.
     /// </summary>
+    /// 
+    [Obsolete]
     internal class Template
     {
         #region Props

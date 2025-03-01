@@ -3,6 +3,7 @@ using System.Security.Claims;
 
 namespace Library.Application.Middleware
 {
+    [Obsolete]
     public class RoleBasedAuthorizationMiddleware
     {
         private readonly RequestDelegate _next;
