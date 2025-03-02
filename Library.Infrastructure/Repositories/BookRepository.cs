@@ -1,6 +1,7 @@
 ﻿using Library.Application.Interfaces;
 using Library.Core.Entities;
 using Library.Core.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace Library.Infrastructure.Repositories
 {
@@ -8,12 +9,19 @@ namespace Library.Infrastructure.Repositories
     {
         #region Props
         // v
-
-        private readonly List<Book> _books = new();  // لیست ساده به عنوان ذخیره‌سازی موقت
-        private int _nextId = 1;  // مقداردهی ID اولیه
+        private readonly LibraryContext _context;
 
         // ^
         #endregion
+
+        #region Ctor
+
+        public BookRepository(LibraryContext context)
+        {
+            _context = context;
+        }
+
+        #endregion Ctor
 
         #region Methods
         // v
@@ -21,47 +29,38 @@ namespace Library.Infrastructure.Repositories
         // دریافت همه کتاب‌ها
         public async Task<IEnumerable<Book>> GetAllAsync()
         {
-            return await Task.FromResult(_books);
+            return await _context.Books.ToListAsync();
         }
 
         // دریافت کتاب بر اساس ID
         public async Task<Book> GetByIdAsync(int id)
         {
-            var book = _books.FirstOrDefault(b => b.Id == id);
-            return await Task.FromResult(book);
+            return await _context.Books.FindAsync(id);
         }
 
         // اضافه کردن کتاب
         public async Task AddAsync(Book book)
         {
-            book.Id = _nextId++;  // ID جدید برای کتاب
-            _books.Add(book);      // اضافه کردن کتاب به لیست
-            await Task.CompletedTask;
+            await _context.Books.AddAsync(book);
+            await _context.SaveChangesAsync();
         }
 
         // بروزرسانی کتاب
         public async Task UpdateAsync(Book book)
         {
-            var existingBook = _books.FirstOrDefault(b => b.Id == book.Id);
-            if (existingBook != null)
-            {
-                existingBook.Title = book.Title;
-                existingBook.Author = book.Author;
-                existingBook.ISBN = book.ISBN;
-                existingBook.PublishedDate = book.PublishedDate;
-            }
-            await Task.CompletedTask;
+            _context.Books.Update(book);
+            await _context.SaveChangesAsync();
         }
 
         // حذف کتاب
         public async Task DeleteAsync(int id)
         {
-            var book = _books.FirstOrDefault(b => b.Id == id);
+            var book = await _context.Books.FindAsync(id);
             if (book != null)
             {
-                _books.Remove(book);
+                _context.Books.Remove(book);
+                await _context.SaveChangesAsync();
             }
-            await Task.CompletedTask;
         }
 
         // ^
