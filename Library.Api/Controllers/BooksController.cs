@@ -86,7 +86,7 @@ namespace Library.Api.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(LoggerEnums.LogMessage.Error.ToString() + " " + ex.Message);
-                return BadRequest(new { message = ex.Message });
+                return NotFound(new { message = ex.Message });
             }
         }
 
