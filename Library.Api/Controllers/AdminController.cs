@@ -1,5 +1,6 @@
 ﻿using Library.Application.Interfaces;
 using Library.Core;
+using Library.Core.DTO;
 using Library.Core.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -47,13 +48,22 @@ namespace Library.Api.Controllers
 
         // POST /api/admin/users
         [HttpPost("users")]
-        public async Task<IActionResult> CreateUser([FromBody] User user)
+        public async Task<IActionResult> CreateUser([FromBody] CreateUpdateUserDto _user)
         {
-            if (user == null)
+            if (_user == null)
             {
                 _logger.LogError(LoggerEnums.LogMessage.Error.ToString() + " " + "Null Request");
                 return BadRequest("User cannot be null.");
             }
+
+            var user = new User
+            {
+                Name = _user.Name,
+                Email = _user.Email,
+                Id = _user.Id,
+                PasswordHash = _user.PasswordHash,
+                Role = _user.Role,
+            };
 
             await _userService.AddAsync(user);
             return CreatedAtAction(nameof(GetUser), new { id = user.Id }, user);
@@ -61,9 +71,9 @@ namespace Library.Api.Controllers
 
         // PUT /api/admin/users/{id}
         [HttpPut("users/{id}")]
-        public async Task<IActionResult> UpdateUser(int id, [FromBody] User user)
+        public async Task<IActionResult> UpdateUser(int id, [FromBody] CreateUpdateUserDto _user)
         {
-            if (id != user.Id)
+            if (id != _user.Id)
             {
                 return BadRequest();
             }
@@ -73,6 +83,15 @@ namespace Library.Api.Controllers
             {
                 return NotFound();
             }
+
+            var user = new User
+            {
+                Name = _user.Name,
+                Email = _user.Email,
+                Id = _user.Id,
+                PasswordHash = _user.PasswordHash,
+                Role = _user.Role,
+            };
 
             await _userService.UpdateAsync(user);
             return NoContent();
