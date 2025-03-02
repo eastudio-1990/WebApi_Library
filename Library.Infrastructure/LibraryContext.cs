@@ -33,7 +33,23 @@ namespace Library.Infrastructure
 
             modelBuilder.Entity<User>().HasData(admin);
 
-        }    
+            modelBuilder.Entity<Book>()
+                .HasOne<Category>()
+                .WithMany()
+                .HasForeignKey(b => b.CategoryId);
+
+            modelBuilder.Entity<BorrowRecord>()
+                .HasOne<Book>()
+                .WithMany()
+                .HasForeignKey(br => br.BookId);
+
+            modelBuilder.Entity<BorrowRecord>()
+                .HasOne<Borrower>()
+                .WithMany()
+                .HasForeignKey(br => br.BorrowerId);
+        }
 
     }
+
+}
 }
