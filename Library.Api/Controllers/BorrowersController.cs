@@ -1,4 +1,5 @@
 ﻿using Library.Application.Interfaces;
+using Library.Core.DTO;
 using Library.Core.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -39,20 +40,41 @@ namespace Library.Api.Controllers
 
         // POST /api/borrowers
         [HttpPost]
-        public async Task<IActionResult> AddBorrower([FromBody] Borrower borrower)
+        public async Task<IActionResult> AddBorrower([FromBody] CreateUpdateBorrowerDto _borrower)
         {
+            if (_borrower is null)
+            {
+                return BadRequest();
+            }
+
+            var borrower = new Borrower
+            {
+                Email = _borrower.Email,
+                Id = _borrower.Id,
+                Name = _borrower.Name,
+                Phone = _borrower.Phone,
+            };
+
             await _borrowerService.AddAsync(borrower);
             return CreatedAtAction(nameof(GetBorrower), new { id = borrower.Id }, borrower);
         }
 
         // PUT /api/borrowers/{id}
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateBorrower(int id, [FromBody] Borrower borrower)
+        public async Task<IActionResult> UpdateBorrower(int id, [FromBody] CreateUpdateBorrowerDto _borrower)
         {
-            if (id != borrower.Id)
+            if (id != _borrower.Id)
             {
                 return BadRequest();
             }
+
+            var borrower = new Borrower
+            {
+                Email = _borrower.Email,
+                Id = _borrower.Id,
+                Name = _borrower.Name,
+                Phone = _borrower.Phone,
+            };
 
             await _borrowerService.UpdateAsync(borrower);
             return NoContent();
@@ -62,6 +84,11 @@ namespace Library.Api.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteBorrower(int id)
         {
+            if (id is 0)
+            {
+                return BadRequest();
+            }
+
             await _borrowerService.DeleteAsync(id);
             return NoContent();
         }
