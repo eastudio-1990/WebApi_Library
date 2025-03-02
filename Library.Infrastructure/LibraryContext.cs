@@ -33,20 +33,26 @@ namespace Library.Infrastructure
 
             modelBuilder.Entity<User>().HasData(admin);
 
+            // تعریف رابطه بین Book و Category
             modelBuilder.Entity<Book>()
-                .HasOne<Category>()
-                .WithMany()
-                .HasForeignKey(b => b.CategoryId);
+                .HasOne(b => b.Category)
+                .WithMany(c => c.Books)
+                .HasForeignKey(b => b.CategoryId)
+                .OnDelete(DeleteBehavior.Restrict); // جلوگیری از حذف cascade
 
+            // تعریف رابطه بین BorrowRecord و Book
             modelBuilder.Entity<BorrowRecord>()
-                .HasOne<Book>()
+                .HasOne(br => br.Book)
                 .WithMany()
-                .HasForeignKey(br => br.BookId);
+                .HasForeignKey(br => br.BookId)
+                .OnDelete(DeleteBehavior.Restrict);
 
+            // تعریف رابطه بین BorrowRecord و Borrower
             modelBuilder.Entity<BorrowRecord>()
-                .HasOne<Borrower>()
-                .WithMany()
-                .HasForeignKey(br => br.BorrowerId);
+                .HasOne(br => br.Borrower)
+                .WithMany(b => b.BorrowRecords)
+                .HasForeignKey(br => br.BorrowerId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
 
     }

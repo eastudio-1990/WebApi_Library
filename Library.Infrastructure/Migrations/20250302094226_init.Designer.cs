@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Library.Infrastructure.Migrations
 {
     [DbContext(typeof(LibraryContext))]
-    [Migration("20250225050144_init")]
+    [Migration("20250302094226_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -35,6 +35,7 @@ namespace Library.Infrastructure.Migrations
 
                     b.Property<string>("ISBN")
                         .IsRequired()
+                        .HasMaxLength(13)
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("PublishedDate")
@@ -86,6 +87,7 @@ namespace Library.Infrastructure.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
+                        .HasMaxLength(100)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
@@ -94,6 +96,7 @@ namespace Library.Infrastructure.Migrations
 
                     b.Property<string>("Phone")
                         .IsRequired()
+                        .HasMaxLength(15)
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -129,6 +132,7 @@ namespace Library.Infrastructure.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
+                        .HasMaxLength(100)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
@@ -141,6 +145,7 @@ namespace Library.Infrastructure.Migrations
 
                     b.Property<string>("Role")
                         .IsRequired()
+                        .HasMaxLength(10)
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -153,7 +158,7 @@ namespace Library.Infrastructure.Migrations
                             Id = 1,
                             Email = "Admin@gmail.com",
                             Name = "Admin",
-                            PasswordHash = "uw7u2ftduJIFMPShQkyDig==:trOGuvZ0TJ0UoHd4VQmMw3WcBVHVx/DVjLBfeCYdx10=",
+                            PasswordHash = "ODgfjsVRNG8C1ga0SWmuCA==:wTlq+7H0TP1r5zDZB4w+Y/UzgD6n/6QYvPQdx/qkb84=",
                             Role = "Admin"
                         });
                 });
@@ -163,7 +168,7 @@ namespace Library.Infrastructure.Migrations
                     b.HasOne("Library.Core.Entities.Category", "Category")
                         .WithMany("Books")
                         .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Category");
@@ -174,13 +179,13 @@ namespace Library.Infrastructure.Migrations
                     b.HasOne("Library.Core.Entities.Book", "Book")
                         .WithMany()
                         .HasForeignKey("BookId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Library.Core.Entities.Borrower", "Borrower")
-                        .WithMany()
+                        .WithMany("BorrowRecords")
                         .HasForeignKey("BorrowerId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Book");
@@ -191,15 +196,22 @@ namespace Library.Infrastructure.Migrations
             modelBuilder.Entity("Library.Core.Entities.Category", b =>
                 {
                     b.HasOne("Library.Core.Entities.Category", "ParentCategory")
-                        .WithMany()
+                        .WithMany("SubCategories")
                         .HasForeignKey("ParentCategoryId");
 
                     b.Navigation("ParentCategory");
                 });
 
+            modelBuilder.Entity("Library.Core.Entities.Borrower", b =>
+                {
+                    b.Navigation("BorrowRecords");
+                });
+
             modelBuilder.Entity("Library.Core.Entities.Category", b =>
                 {
                     b.Navigation("Books");
+
+                    b.Navigation("SubCategories");
                 });
 #pragma warning restore 612, 618
         }

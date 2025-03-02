@@ -18,8 +18,8 @@ namespace Library.Infrastructure.Migrations
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Name = table.Column<string>(type: "TEXT", nullable: false),
-                    Email = table.Column<string>(type: "TEXT", nullable: false),
-                    Phone = table.Column<string>(type: "TEXT", nullable: false)
+                    Email = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
+                    Phone = table.Column<string>(type: "TEXT", maxLength: 15, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -52,9 +52,9 @@ namespace Library.Infrastructure.Migrations
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Name = table.Column<string>(type: "TEXT", nullable: false),
-                    Email = table.Column<string>(type: "TEXT", nullable: false),
+                    Email = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
                     PasswordHash = table.Column<string>(type: "TEXT", nullable: false),
-                    Role = table.Column<string>(type: "TEXT", nullable: false)
+                    Role = table.Column<string>(type: "TEXT", maxLength: 10, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -70,7 +70,7 @@ namespace Library.Infrastructure.Migrations
                     Title = table.Column<string>(type: "TEXT", nullable: false),
                     Author = table.Column<string>(type: "TEXT", nullable: false),
                     PublishedDate = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    ISBN = table.Column<string>(type: "TEXT", nullable: false),
+                    ISBN = table.Column<string>(type: "TEXT", maxLength: 13, nullable: false),
                     CategoryId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
@@ -81,7 +81,7 @@ namespace Library.Infrastructure.Migrations
                         column: x => x.CategoryId,
                         principalTable: "Categories",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -103,19 +103,19 @@ namespace Library.Infrastructure.Migrations
                         column: x => x.BookId,
                         principalTable: "Books",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_BorrowRecords_Borrowers_BorrowerId",
                         column: x => x.BorrowerId,
                         principalTable: "Borrowers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "Email", "Name", "PasswordHash", "Role" },
-                values: new object[] { 1, "Admin@gmail.com", "Admin", "uw7u2ftduJIFMPShQkyDig==:trOGuvZ0TJ0UoHd4VQmMw3WcBVHVx/DVjLBfeCYdx10=", "Admin" });
+                values: new object[] { 1, "Admin@gmail.com", "Admin", "ODgfjsVRNG8C1ga0SWmuCA==:wTlq+7H0TP1r5zDZB4w+Y/UzgD6n/6QYvPQdx/qkb84=", "Admin" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Books_CategoryId",

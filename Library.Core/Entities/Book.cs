@@ -1,4 +1,6 @@
-﻿namespace Library.Core.Entities
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Library.Core.Entities
 {
     public class Book
     {
@@ -18,7 +20,9 @@
         /// <summary>
         /// کد شابک کتاب
         /// </summary>
+        [MaxLength(13)]
         public string ISBN { get; set; }
+
         public int CategoryId { get; set; }
         public Category Category { get; set; }
     }
