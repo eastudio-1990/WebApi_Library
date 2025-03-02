@@ -1,4 +1,5 @@
 ﻿using Library.Application.Interfaces;
+using Library.Core.DTO;
 using Library.Core.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -39,20 +40,53 @@ namespace Library.Api.Controllers
 
         // POST /api/borrowrecords
         [HttpPost]
-        public async Task<IActionResult> AddBorrowRecord([FromBody] BorrowRecord borrowRecord)
+        public async Task<IActionResult> AddBorrowRecord([FromBody] CreateUpdateBorrowRecordDto _borrowRecord)
         {
+            if (_borrowRecord == null)
+            {
+                return BadRequest();
+            }
+
+            var borrowRecord = new BorrowRecord
+            {
+                Book = _borrowRecord.Book,
+                BookId = _borrowRecord.BookId,
+                BorrowDate = _borrowRecord.BorrowDate,
+                Borrower = _borrowRecord.Borrower,
+                BorrowerId = _borrowRecord.BorrowerId,
+                Id = _borrowRecord.Id,
+                ReturnDate = _borrowRecord.ReturnDate,
+            };
+
+
             await _borrowRecordService.AddAsync(borrowRecord);
             return CreatedAtAction(nameof(GetBorrowRecord), new { id = borrowRecord.Id }, borrowRecord);
         }
 
         // PUT /api/borrowrecords/{id}
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateBorrowRecord(int id, [FromBody] BorrowRecord borrowRecord)
+        public async Task<IActionResult> UpdateBorrowRecord(int id, [FromBody] CreateUpdateBorrowRecordDto _borrowRecord)
         {
-            if (id != borrowRecord.Id)
+            if (id != _borrowRecord.Id)
             {
                 return BadRequest();
             }
+
+            if (_borrowRecord == null)
+            {
+                return BadRequest();
+            }
+
+            var borrowRecord = new BorrowRecord
+            {
+                Book = _borrowRecord.Book,
+                BookId = _borrowRecord.BookId,
+                BorrowDate = _borrowRecord.BorrowDate,
+                Borrower = _borrowRecord.Borrower,
+                BorrowerId = _borrowRecord.BorrowerId,
+                Id = _borrowRecord.Id,
+                ReturnDate = _borrowRecord.ReturnDate,
+            };
 
             await _borrowRecordService.UpdateAsync(borrowRecord);
             return NoContent();
