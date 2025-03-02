@@ -22,6 +22,11 @@ namespace Library.Api.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] Application.Middleware.LoginRequest request)
         {
+            if (request is null || string.IsNullOrEmpty(request.Email) || string.IsNullOrEmpty(request.Password))
+            {
+                return BadRequest();
+            }
+
             try
             {
                 var token = await _authService.LoginAsync(request.Email, request.Password);
@@ -39,6 +44,10 @@ namespace Library.Api.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Register([FromBody] Application.Middleware.RegisterRequest request)
         {
+            if (request is null || string.IsNullOrEmpty(request.Email) || string.IsNullOrEmpty(request.Password) || string.IsNullOrEmpty(request.Name))
+            {
+                return BadRequest();
+            }
             try
             {
                 await _authService.RegisterAsync(request.Email, request.Password, request.Name, request.Role);

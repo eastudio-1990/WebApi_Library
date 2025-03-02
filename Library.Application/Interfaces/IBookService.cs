@@ -1,4 +1,5 @@
-﻿using Library.Core.Entities;
+﻿using Library.Core.DTO;
+using Library.Core.Entities;
 
 namespace Library.Application.Interfaces
 {

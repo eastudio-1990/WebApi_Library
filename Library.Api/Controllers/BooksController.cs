@@ -1,5 +1,6 @@
 ﻿using Library.Application.Interfaces;
 using Library.Core;
+using Library.Core.DTO;
 using Library.Core.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -61,13 +62,21 @@ namespace Library.Api.Controllers
         // POST /api/books
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> AddBook([FromBody] Book book)
+        public async Task<IActionResult> AddBook([FromBody] CreateUpdateBookDto _book)
         {
-            if (book == null)
+            if (_book == null)
             {
                 _logger.LogError(LoggerEnums.LogMessage.Warning.ToString() + " " + "Null Request");
                 return BadRequest("Book cannot be null.");
             }
+
+            var book = new Book
+            {
+                Title = _book.Title,
+                Author = _book.Author,
+                ISBN = _book.ISBN,
+                PublishedDate = _book.PublishedDate,
+            };
 
             try
             {
@@ -84,9 +93,9 @@ namespace Library.Api.Controllers
         // PUT /api/books/{id}
         [HttpPut("{id}")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> UpdateBook(int id, [FromBody] Book book)
+        public async Task<IActionResult> UpdateBook(int id, [FromBody] CreateUpdateBookDto _book)
         {
-            if (book == null || book.Id != id)
+            if (_book == null || _book.Id != id)
             {
                 _logger.LogError(LoggerEnums.LogMessage.Warning.ToString() + " " + "Book ID mismatch or Null Request");
                 return BadRequest("Book ID mismatch or book is null.");
@@ -99,6 +108,15 @@ namespace Library.Api.Controllers
                 {
                     return NotFound("Book not found.");
                 }
+
+                var book = new Book
+                {
+                    Id = id,
+                    Title = _book.Title,
+                    Author = _book.Author,
+                    ISBN = _book.ISBN,
+                    PublishedDate = _book.PublishedDate,
+                };
 
                 await _bookService.UpdateAsync(book);
                 return NoContent();
