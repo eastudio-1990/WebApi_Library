@@ -29,13 +29,15 @@ namespace Library.Infrastructure.Repositories
         // دریافت همه کتاب‌ها
         public async Task<IEnumerable<Book>> GetAllAsync()
         {
-            return await _context.Books.ToListAsync();
+            return await _context.Books.ToListAsync()
+                ?? throw new NullReferenceException("No Book Here");
         }
 
         // دریافت کتاب بر اساس ID
         public async Task<Book> GetByIdAsync(int id)
         {
-            return await _context.Books.FindAsync(id);
+            return await _context.Books.FindAsync(id)
+                 ?? throw new KeyNotFoundException($"Not Found");
         }
 
         // اضافه کردن کتاب
@@ -55,6 +57,7 @@ namespace Library.Infrastructure.Repositories
         // حذف کتاب
         public async Task DeleteAsync(int id)
         {
+            if (id == 0) throw new KeyNotFoundException("Book Not Found");
             var book = await _context.Books.FindAsync(id);
             if (book != null)
             {

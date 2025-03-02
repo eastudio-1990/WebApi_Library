@@ -32,6 +32,11 @@ namespace Library.Api.Controllers
         [HttpGet("users/{id}")]
         public async Task<IActionResult> GetUser(int id)
         {
+            if (id == 0)
+            {
+                return BadRequest();
+            }
+
             var user = await _userService.GetByIdAsync(id);
             if (user == null)
             {
@@ -77,6 +82,11 @@ namespace Library.Api.Controllers
         [HttpDelete("users/{id}")]
         public async Task<IActionResult> DeleteUser(int id)
         {
+            if (id == 0)
+            {
+                return BadRequest();
+            }
+
             var user = await _userService.GetByIdAsync(id);
             if (user == null)
             {

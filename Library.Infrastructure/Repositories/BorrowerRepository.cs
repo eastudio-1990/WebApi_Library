@@ -30,12 +30,14 @@ namespace Library.Infrastructure.Repositories
         // v
         public async Task<IEnumerable<Borrower>> GetAllAsync()
         {
-            return await _context.Borrowers.ToListAsync();
+            return await _context.Borrowers.ToListAsync()
+               ?? throw new KeyNotFoundException("No Borrower Found");
         }
 
         public async Task<Borrower> GetByIdAsync(int id)
         {
-            return await _context.Borrowers.FindAsync(id);
+            return await _context.Borrowers.FindAsync(id)
+               ?? throw new KeyNotFoundException("No Borrower Found");
         }
 
         public async Task AddAsync(Borrower borrower)

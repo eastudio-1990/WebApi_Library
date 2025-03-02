@@ -32,12 +32,14 @@ namespace Library.Infrastructure.Repositories
 
         public async Task<User?> GetByEmailAsync(string email)
         {
-            return await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+            return await _context.Users.FirstOrDefaultAsync(u => u.Email == email)
+                ?? throw new KeyNotFoundException($"{email} Not Found");
         }
 
         public async Task<User?> GetByIdAsync(int id)
         {
-            return await _context.Users.FindAsync(id);
+            return await _context.Users.FindAsync(id)
+                ?? throw new KeyNotFoundException($"Not Found");
         }
 
         public async Task AddAsync(User user)
@@ -59,6 +61,10 @@ namespace Library.Infrastructure.Repositories
             {
                 _context.Users.Remove(user);
                 await _context.SaveChangesAsync();
+            }
+            else
+            {
+                throw new KeyNotFoundException($"Not Found");
             }
         }
 
