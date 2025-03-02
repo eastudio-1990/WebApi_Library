@@ -1,4 +1,5 @@
 ﻿using Library.Application.Interfaces;
+using Library.Core.DTO;
 using Library.Core.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -41,12 +42,22 @@ namespace Library.Api.Controllers
         // POST /api/categories
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> AddCategory([FromBody] Category category)
+        public async Task<IActionResult> AddCategory([FromBody] CreateUpdateCategoryDto _category)
         {
-            if (category == null)
+            if (_category == null)
             {
                 return BadRequest("Category data is required.");
             }
+
+            var category = new Category
+            {
+                Id = _category.Id,
+                Books = _category.Books,
+                Name = _category.Name,
+                ParentCategory = _category.ParentCategory,
+                ParentCategoryId = _category.ParentCategoryId,
+            };
+
             await _categoryService.AddAsync(category);
             return CreatedAtAction(nameof(GetCategory), new { id = category.Id }, category);
         }
@@ -54,9 +65,9 @@ namespace Library.Api.Controllers
         // POST /api/categories/{id}/child
         [HttpPost("{id}/child")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> AddSubcategory(int id, [FromBody] Category subcategory)
+        public async Task<IActionResult> AddSubcategory(int id, [FromBody] CreateUpdateCategoryDto _category)
         {
-            if (subcategory == null)
+            if (_category == null)
             {
                 return BadRequest("Subcategory data is required.");
             }
@@ -66,9 +77,18 @@ namespace Library.Api.Controllers
                 return NotFound("Parent category not found.");
             }
 
-            subcategory.ParentCategoryId = id;
-            await _categoryService.AddAsync(subcategory);
-            return CreatedAtAction(nameof(GetCategory), new { id = subcategory.Id }, subcategory);
+            var category = new Category
+            {
+                Id = _category.Id,
+                Books = _category.Books,
+                Name = _category.Name,
+                ParentCategory = _category.ParentCategory,
+                ParentCategoryId = _category.ParentCategoryId,
+            };
+
+            category.ParentCategoryId = id;
+            await _categoryService.AddAsync(category);
+            return CreatedAtAction(nameof(GetCategory), new { id = category.Id }, category);
         }
 
         // PUT /api/categories/{id}
